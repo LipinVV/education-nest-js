@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { IBook } from '../inferfaces';
 
 @Controller('books')
 export class BooksController {
@@ -24,12 +25,12 @@ export class BooksController {
   }
 
   @Post()
-  create(@Body() book) {
+  create(@Body() book: IBook) {
     this.booksService.create(book);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updatedBook) {
+  update(@Param('id') id: string, @Body() updatedBook: IBook) {
     return this.booksService.update(id, updatedBook);
   }
 
