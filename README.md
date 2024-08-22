@@ -8,6 +8,10 @@ nest generate service books
 nest generate controller books
 ```
 
+```bash
+nest generate module books
+```
+
 ## примеры запросов:
 
 -X (или --request)
