@@ -1,41 +1,43 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
   Put,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { BookDocument } from '../schemas/book.schema';
 import { IBook } from '../inferfaces';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
+  @Post()
+  public create(@Body() body: IBook): Promise<BookDocument> {
+    return this.booksService.create(body);
+  }
+
   @Get()
-  findAll() {
-    return this.booksService.findAll();
+  public getAll(): Promise<BookDocument[]> {
+    return this.booksService.getAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(id);
-  }
-
-  @Post()
-  create(@Body() book: IBook) {
-    this.booksService.create(book);
+  public getBook(@Param('id') id: string) {
+    console.log(id);
+    return this.booksService.getBook(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updatedBook: IBook) {
-    return this.booksService.update(id, updatedBook);
+  public updateBook(@Param('id') id: string, @Body() updatedBook: IBook) {
+    return this.booksService.updateBook(id, updatedBook);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(id);
+  public deleteBook(@Param('id') id: string) {
+    return this.booksService.deleteBook(id);
   }
 }
