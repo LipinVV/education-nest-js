@@ -49,3 +49,9 @@ curl -X PUT http://localhost:3000/books/1 \
 ## удаление книги по id
 
 curl -X DELETE http://localhost:3000/books/1
+
+## Запрос через RxJs к github
+curl -X GET http://localhost:3000/rxjs/github?q=nodejs
+
+## Запрос через RxJs к gitlab
+curl -X GET http://localhost:3000/rxjs/gitlab?q=nodejs
