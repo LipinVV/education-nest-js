@@ -4,13 +4,10 @@ import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RxjsModule } from './rxjs/rxjs.module';
+import { MONGO_DB_URL } from './constants';
 
 @Module({
-  imports: [
-    BooksModule,
-    MongooseModule.forRoot('mongodb://localhost:27017'),
-    RxjsModule,
-  ],
+  imports: [BooksModule, MongooseModule.forRoot(MONGO_DB_URL), RxjsModule],
   controllers: [AppController],
   providers: [AppService],
 })
