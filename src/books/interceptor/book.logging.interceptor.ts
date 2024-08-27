@@ -10,8 +10,7 @@ import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('A new request');
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const requestTime = Date.now();
 
     const request = context.switchToHttp().getRequest();
@@ -29,10 +28,18 @@ export class LoggingInterceptor implements NestInterceptor {
         };
       }),
       catchError((error) => {
-        console.log('\nFailed request');
-        console.log(`\nExecution time: ${Date.now() - requestTime}ms`);
-        console.log('\nError message: ', error);
-        return throwError(new InternalServerErrorException());
+        const errorResponse = {
+          status: 'fail',
+          data: {
+            message: error.message,
+            timestamp: new Date().toISOString(),
+            path: url,
+          },
+        };
+
+        return throwError(
+          () => new InternalServerErrorException(errorResponse),
+        );
       }),
     );
   }
