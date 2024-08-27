@@ -7,6 +7,12 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    // Искусственно вызываем исключение для демонстрации
+    // throw new HttpException(
+    //   { message: 'Forbidden', code: 1001 },
+    //   HttpStatus.FORBIDDEN,
+    // );
+
     return this.appService.getHello();
   }
 }

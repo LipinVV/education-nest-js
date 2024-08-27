@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { RESPONSE_STATUS } from '../../constants';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -26,13 +27,13 @@ export class LoggingInterceptor implements NestInterceptor {
             })
           : [{ ...books.toObject(), requestTime: requestTime }];
         return {
-          status: `success response from ${url}`,
+          status: `${RESPONSE_STATUS.SUCCESS} response from ${url}`,
           data: updatedBooks,
         };
       }),
       catchError((error) => {
         const errorResponse = {
-          status: 'fail',
+          status: `${RESPONSE_STATUS.FAIL}`,
           data: {
             message: error.message,
             timestamp: new Date().toISOString(),
