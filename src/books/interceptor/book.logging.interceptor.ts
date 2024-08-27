@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -16,12 +16,15 @@ export class LoggingInterceptor implements NestInterceptor {
 
     // Если метод handle() не будет вызван, то обработка маршрута выполняться не будет
     return next.handle().pipe(
-      tap((books) => {
+      map((books) => {
         console.log('\nSuccessful request');
         const updatedBooks = books.map((book) => {
-          return { ...book, requestTime: requestTime };
+          return { ...book.toObject(), requestTime: requestTime }; // .toObject() или toJSON() на каждом элементе, чтобы получить "чистые" данные без лишних полей
         });
-        console.log('updatedBooks', updatedBooks);
+        return {
+          status: 'success',
+          data: updatedBooks,
+        };
       }),
       catchError((error) => {
         console.log('\nFailed request');

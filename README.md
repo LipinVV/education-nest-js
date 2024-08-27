@@ -1,5 +1,11 @@
 # NestJS шпаргалка:
 
+## Старт проекта
+```bash
+nest start --watch
+```
+
+## Генерации частей проекта
 ```bash
 nest generate service books
 ```
@@ -12,21 +18,21 @@ nest generate controller books
 nest generate module books
 ```
 
-## примеры запросов:
+## Примеры запросов:
 
 -X (или --request)
 -H (или --header)
 -d (или --data)
 
-## получение всех книг
+## Получение всех книг
 
 curl -X GET http://localhost:3000/books
 
-## получение книги по id
+## Получение книги по id
 
 curl -X GET http://localhost:3000/books/1
 
-## создание книги
+## Создание книги
 
 curl -X POST http://localhost:3000/books \
 -H "Content-Type: application/json" \
@@ -36,7 +42,7 @@ curl -X POST http://localhost:3000/books \
 "author": "Somebody, who can write a book"
 }'
 
-## обновление книги по id
+## Обновление книги по id
 
 curl -X PUT http://localhost:3000/books/1 \
 -H "Content-Type: application/json" \
@@ -46,7 +52,7 @@ curl -X PUT http://localhost:3000/books/1 \
 "author": "Developer #23"
 }'
 
-## удаление книги по id
+## Удаление книги по id
 
 curl -X DELETE http://localhost:3000/books/1
 

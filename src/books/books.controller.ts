@@ -13,7 +13,6 @@ import { BookDocument } from '../schemas/book.schema';
 import { LoggingInterceptor } from './interceptor/book.logging.interceptor';
 import { IBook } from '../inferfaces';
 
-@UseInterceptors(LoggingInterceptor)
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
@@ -23,6 +22,7 @@ export class BooksController {
     return this.booksService.create(body);
   }
 
+  @UseInterceptors(LoggingInterceptor)
   @Get()
   public getAll(): Promise<BookDocument[]> {
     return this.booksService.getAll();
@@ -30,7 +30,6 @@ export class BooksController {
 
   @Get(':id')
   public getBook(@Param('id') id: string) {
-    console.log(id);
     return this.booksService.getBook(id);
   }
 
