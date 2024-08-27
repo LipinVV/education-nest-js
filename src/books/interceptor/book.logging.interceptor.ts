@@ -19,9 +19,12 @@ export class LoggingInterceptor implements NestInterceptor {
     // Если метод handle() не будет вызван, то обработка маршрута выполняться не будет
     return next.handle().pipe(
       map((books) => {
-        const updatedBooks = books.map((book) => {
-          return { ...book.toObject(), requestTime: requestTime }; // .toObject() или toJSON() на каждом элементе, чтобы получить "чистые" данные без лишних полей
-        });
+        const hasLength = books && books.length > 0;
+        const updatedBooks = hasLength
+          ? books.map((book) => {
+              return { ...book.toObject(), requestTime: requestTime }; // .toObject() или toJSON() на каждом элементе, чтобы получить "чистые" данные без лишних полей
+            })
+          : [{ ...books.toObject(), requestTime: requestTime }];
         return {
           status: `success response from ${url}`,
           data: updatedBooks,
