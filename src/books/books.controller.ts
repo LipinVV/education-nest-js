@@ -12,6 +12,7 @@ import { BooksService } from './books.service';
 import { BookDocument } from '../schemas/book.schema';
 import { LoggingInterceptor } from './interceptor/book.logging.interceptor';
 import { IBook } from '../inferfaces';
+import { BookUrlValidatorPipe } from './pipe/book.url.validator.pipe';
 
 @UseInterceptors(LoggingInterceptor)
 @Controller('books')
@@ -29,17 +30,20 @@ export class BooksController {
   }
 
   @Get(':id')
-  public getBook(@Param('id') id: string) {
+  public getBook(@Param('id', BookUrlValidatorPipe) id: string) {
     return this.booksService.getBook(id);
   }
 
   @Put(':id')
-  public updateBook(@Param('id') id: string, @Body() updatedBook: IBook) {
+  public updateBook(
+    @Param('id', BookUrlValidatorPipe) id: string,
+    @Body() updatedBook: IBook,
+  ) {
     return this.booksService.updateBook(id, updatedBook);
   }
 
   @Delete(':id')
-  public deleteBook(@Param('id') id: string) {
+  public deleteBook(@Param('id', BookUrlValidatorPipe) id: string) {
     return this.booksService.deleteBook(id);
   }
 }
