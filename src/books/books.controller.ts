@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { BookDocument } from '../schemas/book.schema';
+import { LoggingInterceptor } from './interceptor/book.logging.interceptor';
 import { IBook } from '../inferfaces';
 
+@UseInterceptors(LoggingInterceptor)
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
