@@ -39,4 +39,10 @@ export class AuthService {
     const user = await this.userService.create(createUserDto);
     return this.login(user);
   }
+
+  async getProfile(token: string) {
+    const user = await this.userService.findOneById(token);
+    const { password, ...result } = user;
+    return result;
+  }
 }

@@ -13,9 +13,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     PassportModule,
     JwtModule.registerAsync({
+      // registerAsync позволяет загружать конфигурацию асинхронно, например, из переменных окружения или других внешних источников.
+      // Это особенно важно, когда конфигурация зависит от значений, которые становятся доступны только во время выполнения (например, из .env).
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
+        // useFactory позволяет использовать ConfigService для получения конфигурационных значений, таких как секретный ключ JWT, из .env.
         secret: configService.get<string>('JWT_SECRET_KEY'),
         signOptions: { expiresIn: '60m' },
       }),

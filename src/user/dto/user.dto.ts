@@ -4,4 +4,5 @@ export class UserDto {
   firstName: string;
   lastName: string;
   _id: string;
+  token: string;
 }
