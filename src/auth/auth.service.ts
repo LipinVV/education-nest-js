@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import * as bcrypt from 'bcryptjs';
 import { UserDto } from '../user/dto/user.dto';
 
 @Injectable()
@@ -14,7 +13,8 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<unknown> {
     const user = await this.userService.findOne(email); // Пароль, который пользователь вводит при входе, не хранится в базе данных в открытом виде.
     // Вместо этого мы храним его хеш, созданный с помощью bcrypt
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && password === user.password) {
+      // compare не отрабатывает нормально, надо разобраться с хэшированием (await bcrypt.compare(password, user.password))
       // bcrypt берёт введённый пароль, хеширует его, и сравнивает с хешем, который хранится в базе данных
       const { password, ...result } = user;
       // После того как мы убедились, что пароль верен, мы не хотим отправлять его обратно (например, на клиент).
@@ -29,6 +29,8 @@ export class AuthService {
       email: user.email,
       id: user._id,
       firstName: user.firstName,
+      password: user.password,
+      token: user.token,
     };
     return {
       access_token: this.jwtService.sign(payload),

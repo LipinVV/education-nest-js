@@ -7,7 +7,7 @@ import { JwtAuthGuard } from './strategy/user.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(JwtAuthGuard) // <- для проверки работоспособности работы роута (например curl -X GET http://localhost:3000/users/1) закомментировать
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getProfile(@Param('id') id: string) {
     return this.authService.getProfile(id);
@@ -15,7 +15,7 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() createUserDto: UserDto) {
-    return this.authService.signup(createUserDto);
+    return (await this.authService.signup(createUserDto)).access_token;
   }
 
   @Post('signin')
@@ -24,6 +24,6 @@ export class AuthController {
     if (!user) {
       return { message: 'Invalid credentials' };
     }
-    return this.authService.login(user);
+    return (await this.authService.login(user)).access_token;
   }
 }
