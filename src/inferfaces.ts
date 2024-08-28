@@ -11,4 +11,12 @@ interface IBook {
   fileBook: string;
 }
 
-export { IBook, BookFavourite };
+interface IUser {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  _id: string;
+}
+
+export { IBook, BookFavourite, IUser };
