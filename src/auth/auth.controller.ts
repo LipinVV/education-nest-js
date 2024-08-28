@@ -7,7 +7,7 @@ import { JwtAuthGuard } from './strategy/user.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(JwtAuthGuard) // <- для проверки работоспособности (например curl -X GET http://localhost:3000/users/1) закомментировать
+  @UseGuards(JwtAuthGuard) // <- для проверки работоспособности работы роута (например curl -X GET http://localhost:3000/users/1) закомментировать
   @Get(':id')
   async getProfile(@Param('id') id: string) {
     return this.authService.getProfile(id);
