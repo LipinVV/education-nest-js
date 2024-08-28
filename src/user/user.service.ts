@@ -21,7 +21,7 @@ export class UserService {
     return createdUser.save();
   }
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findOneByEmail(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email }).exec();
   }
 

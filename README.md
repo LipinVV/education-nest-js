@@ -93,3 +93,8 @@ curl -X POST http://localhost:3000/api/users/signin \
   "password": "securepassword"
 }'
 ```
+
+## Найти пользователя по token (ID)
+```bash
+curl -X GET http://localhost:3000/users/1 "Authorization: Bearer <токен>"
+```

@@ -11,7 +11,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<unknown> {
-    const user = await this.userService.findOne(email); // Пароль, который пользователь вводит при входе, не хранится в базе данных в открытом виде.
+    const user = await this.userService.findOneByEmail(email); // Пароль, который пользователь вводит при входе, не хранится в базе данных в открытом виде.
     // Вместо этого мы храним его хеш, созданный с помощью bcrypt
     if (user && password === user.password) {
       // compare не отрабатывает нормально, надо разобраться с хэшированием (await bcrypt.compare(password, user.password))
