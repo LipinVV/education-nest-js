@@ -74,7 +74,7 @@ curl -X GET http://localhost:3000/rxjs/gitlab?q=nodejs
 
 ## Регистрация пользователя
 ```bash
-curl -X POST http://localhost:3000/api/users/signup \
+curl -X POST http://localhost:3000/users/signup \
 -H "Content-Type: application/json" \
 -d '{
 "email": "test@example.com",
@@ -86,7 +86,7 @@ curl -X POST http://localhost:3000/api/users/signup \
 
 ## Логин пользователя
 ```bash
-curl -X POST http://localhost:3000/api/users/signin \
+curl -X POST http://localhost:3000/users/signin \
 -H "Content-Type: application/json" \
 -d '{
   "email": "test@example.com",
