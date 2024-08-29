@@ -31,7 +31,6 @@ export class BooksController {
   public getAll(): Promise<BookDocument[]> {
     return this.booksService.getAll();
   }
-
   @Get(':id')
   public getBook(@Param('id', BookUrlValidatorPipe) id: string) {
     return this.booksService.getBook(id);
