@@ -20,8 +20,6 @@ const mockBook = {
 const mockBookModel = {
   // имитируем методы модели
   find: jest.fn().mockResolvedValue([mockBook]),
-  create: jest.fn().mockResolvedValue(mockBook),
-  save: jest.fn().mockResolvedValue({}),
   findByIdAndUpdate: jest.fn().mockResolvedValue(mockBook),
   findOneAndDelete: jest.fn().mockResolvedValue(mockBook),
 };
@@ -96,6 +94,8 @@ describe('BooksService', () => {
   });
 });
 
+// надо подумать над комбинацией
+
 const mockSave = jest.fn().mockResolvedValue(mockBook);
 const customBookModelForSaving = jest.fn().mockImplementation(() => ({
   save: mockSave,
@@ -110,10 +110,10 @@ describe('BooksService', () => {
         BooksService,
         {
           provide: getModelToken(Book.name),
-          useValue: customBookModelForSaving, // Mocking the book model
+          useValue: customBookModelForSaving,
         },
         {
-          provide: 'DatabaseConnection', // Mocking dependencies like DatabaseConnection
+          provide: 'DatabaseConnection',
           useValue: {},
         },
       ],
