@@ -1,3 +1,6 @@
+import Response from 'express';
+import { BookDocument } from './schemas/book.schema';
+
 type BookFavourite = boolean | string;
 
 interface IBook {
@@ -11,12 +14,10 @@ interface IBook {
   fileBook: string;
 }
 
-interface IUser {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  _id: string;
+interface ITestResponse extends Response {
+  body: {
+    status: string;
+    data: BookDocument[];
+  };
 }
-
-export { IBook, BookFavourite, IUser };
+export { IBook, BookFavourite, ITestResponse };
