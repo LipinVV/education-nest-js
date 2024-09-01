@@ -67,12 +67,6 @@ describe('BooksService', () => {
     // иначе можно нарваться на ошибку, при несовпадении методов в сервисе и тестах
   });
 
-  it('сервис должен создавать книгу', async () => {
-    const newBook = await service.create(mockBook);
-    expect(newBook).toEqual(mockBook);
-    expect(model.create).toHaveBeenCalledWith(mockBook);
-  });
-
   it('сервис должен обновлять книгу', async () => {
     const updatedBook = await service.updateBook('UID1', mockBook);
     expect(updatedBook).toEqual(mockBook);
@@ -99,5 +93,40 @@ describe('BooksService', () => {
     await expect(service.deleteBook('UID1')).rejects.toThrow(
       new NotFoundException(`Book #UID1 is not found`),
     );
+  });
+});
+
+const mockSave = jest.fn().mockResolvedValue(mockBook);
+const customBookModelForSaving = jest.fn().mockImplementation(() => ({
+  save: mockSave,
+}));
+
+describe('BooksService', () => {
+  let service: BooksService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        BooksService,
+        {
+          provide: getModelToken(Book.name),
+          useValue: customBookModelForSaving, // Mocking the book model
+        },
+        {
+          provide: 'DatabaseConnection', // Mocking dependencies like DatabaseConnection
+          useValue: {},
+        },
+      ],
+    }).compile();
+
+    service = module.get<BooksService>(BooksService);
+  });
+
+  it('сервис должен создавать книгу', async () => {
+    const newBook = await service.create(mockBook);
+
+    expect(newBook).toEqual(mockBook);
+    expect(customBookModelForSaving).toHaveBeenCalledWith(mockBook);
+    expect(mockSave).toHaveBeenCalled();
   });
 });
