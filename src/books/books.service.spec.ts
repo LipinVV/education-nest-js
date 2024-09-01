@@ -3,6 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { BooksService } from './books.service';
 import { Book, BookDocument } from '../schemas/book.schema';
 import { Model } from 'mongoose';
+import { NotFoundException } from '@nestjs/common';
 
 // имитируем книгу
 const mockBook = {
@@ -21,6 +22,8 @@ const mockBookModel = {
   find: jest.fn().mockResolvedValue([mockBook]),
   create: jest.fn().mockResolvedValue(mockBook),
   save: jest.fn().mockResolvedValue({}),
+  findByIdAndUpdate: jest.fn().mockResolvedValue(mockBook),
+  findOneAndDelete: jest.fn().mockResolvedValue(mockBook),
 };
 
 describe('BooksService', () => {
@@ -68,5 +71,33 @@ describe('BooksService', () => {
     const newBook = await service.create(mockBook);
     expect(newBook).toEqual(mockBook);
     expect(model.create).toHaveBeenCalledWith(mockBook);
+  });
+
+  it('сервис должен обновлять книгу', async () => {
+    const updatedBook = await service.updateBook('UID1', mockBook);
+    expect(updatedBook).toEqual(mockBook);
+    expect(model.findByIdAndUpdate).toHaveBeenCalledWith('UID1', mockBook, {
+      new: true,
+    });
+  });
+
+  it('сервис должен выбрасывать исключение, если книга для обновления не найдена', async () => {
+    mockBookModel.findByIdAndUpdate.mockResolvedValue(null); // имитируем отсутствие книги
+    await expect(service.updateBook('UID1', mockBook)).rejects.toThrow(
+      new NotFoundException(`Book #UID1 is not found`),
+    );
+  });
+
+  it('сервис должен удалять книгу', async () => {
+    const result = await service.deleteBook('UID1');
+    expect(result).toBe(`Book #UID1 was deleted`);
+    expect(model.findOneAndDelete).toHaveBeenCalledWith({ id: 'UID1' });
+  });
+
+  it('сервис должен выбрасывать исключение, если книга для удаления не найдена', async () => {
+    mockBookModel.findOneAndDelete.mockResolvedValue(null); // имитируем отсутствие книги
+    await expect(service.deleteBook('UID1')).rejects.toThrow(
+      new NotFoundException(`Book #UID1 is not found`),
+    );
   });
 });
