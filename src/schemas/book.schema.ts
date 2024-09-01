@@ -15,7 +15,7 @@ export class Book {
   description: string;
 
   @Prop()
-  authors: string;
+  authors: string[];
 
   @Prop()
   favourite: string;

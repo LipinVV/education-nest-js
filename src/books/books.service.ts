@@ -17,8 +17,8 @@ export class BooksService {
   }
 
   async getAll(): Promise<BookDocument[]> {
-    const booksData = await this.BookModel.find().exec();
-    if (!booksData || booksData.length == 0) {
+    const booksData = await this.BookModel.find();
+    if (!booksData || [booksData].length === 0) {
       throw new NotFoundException('Books data is not found!');
     }
     return booksData;
@@ -27,7 +27,7 @@ export class BooksService {
   async getBook(
     bookId: string,
   ): Promise<HydratedDocument<BookDocument, unknown>[]> {
-    const existingBook = await this.BookModel.find({ id: bookId }).exec();
+    const existingBook = await this.BookModel.find({ id: bookId });
     if (!existingBook) {
       throw new NotFoundException(`Book #${bookId} is not found`);
     }
