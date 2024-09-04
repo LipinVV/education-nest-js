@@ -1,4 +1,3 @@
-import Response from 'express';
 import { BookDocument } from './schemas/book.schema';
 
 type BookFavourite = boolean | string;
@@ -14,7 +13,7 @@ interface IBook {
   fileBook: string;
 }
 
-interface ITestResponse extends Response {
+interface ITestResponse {
   body: {
     status: string;
     data: BookDocument[];
